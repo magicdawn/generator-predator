@@ -2,10 +2,9 @@ global.Promise = require('bluebird');
 var co = require('co');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
-var glob = require('glob');
 var pathFn = require('path');
-var fs = require('fs');
-var _ = require('lodash');
+var fs = require('fs-extra');
+var glob = require('glob');
 
 /**
  * rev map
@@ -13,13 +12,9 @@ var _ = require('lodash');
 var rev = {};
 
 /**
- * build
- *
- * 1. img/fonts/asset -> copy
- * 2. css -> less
- * 3. js -> browserify
+ * build Task
  */
-gulp.task('build', function(cb) {
+gulp.task('build', function() {
   process.env.NODE_ENV = 'production';
   var app = require('./app');
   var rev = {};
@@ -41,7 +36,9 @@ gulp.task('build', function(cb) {
     '*/assets/**/*.*'
   ], rev);
 
-  co(function * () {
+  // gulp.task could return a Promise
+  return co(function * () {
+
     // less -> css
     yield predator.buildLessAsync([
       '*/css/main/**/*.less'
@@ -53,6 +50,15 @@ gulp.task('build', function(cb) {
       'global/js/main/index.json'
     ], rev);
 
+    // 其他 js css
+    // 上面只处理了 带有main的
+    predator.buildOtherJsCss([
+      '*/js/*.*',
+      '*/js/!(main)/**/*.*',
+      '*/css/*.*',
+      '*/css/!(main)/**/*.*'
+    ], rev);
+
     // 替换 view, 复制到 view_build 文件夹
     predator.buildView([
       '*/view/**/*.*'
@@ -60,12 +66,27 @@ gulp.task('build', function(cb) {
 
     fs.writeFileSync(__dirname + '/rev.json', JSON.stringify(rev, null, '  '), 'utf8');
     gutil.log('predator', 'rev.json writed');
-  })
-    .then(function() {
-      cb(null);
-    })
-    .catch(function(e) {
-      cb(e);
-      console.error(e.stack || e);
-    });
+  });
+});
+
+/**
+ * do clean stuff
+ */
+gulp.task('clean', ['clean-public', 'clean-view']);
+
+/**
+ * ./public
+ */
+gulp.task('clean-public', function() {
+  fs.removeSync(__dirname + '/public');
+});
+
+/**
+ * view_build
+ */
+gulp.task('clean-view', function() {
+  var dirs = glob.sync('app/*/view_build');
+  dirs.forEach(function(d) {
+    fs.removeSync(__dirname + '/' + d);
+  });
 });

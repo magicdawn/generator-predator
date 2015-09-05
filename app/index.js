@@ -3,8 +3,7 @@
  */
 var Base = require('yeoman-generator').Base;
 var inherits = require('util').inherits;
-var fs = require('fs');
-var fse = require('fs-extra');
+var fs = require('fs-extra');
 var _ = require('lodash');
 var debug = require('debug')('yeoman:predator:app');
 
@@ -21,11 +20,6 @@ module.exports = Generator;
 
 function Generator() {
   Base.apply(this, arguments);
-
-  // this.argument('name', {
-  //   type: 'string',
-  //   required: true
-  // });
 }
 inherits(Generator, Base);
 
@@ -89,7 +83,7 @@ Generator.prototype._copyFiles = function() {
   });
 
   // lib 文件夹
-  fse.ensureDirSync(this.destinationPath('lib'));
+  fs.ensureDirSync(this.destinationPath('lib'));
 
   // app 文件夹
   if (fs.existsSync(this.destinationPath('app'))) {
@@ -98,7 +92,7 @@ Generator.prototype._copyFiles = function() {
   } else {
     var src = this.templatePath('app');
     var dest = this.destinationPath('app');
-    fse.copySync(src, dest);
+    fs.copySync(src, dest);
     this.log('> processed: app/ dir');
   }
 };
