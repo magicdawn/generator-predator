@@ -1,1 +1,0 @@
-alert('/index/js/foo/bar.js 不会被browserify处理');

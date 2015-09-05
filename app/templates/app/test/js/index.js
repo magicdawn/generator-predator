@@ -1,1 +1,0 @@
-alert('不会被browserify处理');
