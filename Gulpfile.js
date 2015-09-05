@@ -3,6 +3,11 @@ var glob = require('glob');
 var fs = require('fs-extra');
 
 gulp.task('copy', function() {
+
+  // clean
+  fs.removeSync(__dirname + '/app/templates');
+
+  // files
   ['index.js', 'app.js', 'Gulpfile.js', 'package.json',
     'app/global', 'app/index'
   ].forEach(function(f) {
