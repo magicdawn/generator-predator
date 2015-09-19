@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * module dependencies
  */
@@ -6,6 +8,8 @@ var inherits = require('util').inherits;
 var fs = require('fs-extra');
 var _ = require('lodash');
 var debug = require('debug')('yeoman:predator:app');
+var path = require('path');
+var symbols = require('log-symbols');
 
 /**
  * exports
@@ -20,9 +24,12 @@ module.exports = Generator;
 
 function Generator() {
   Base.apply(this, arguments);
+
+  // use predator-kit 's test/fixtures as template
+  var fixturesRoot = path.join(path.dirname(require.resolve('predator-kit')), 'test/fixtures');
+  this.sourceRoot(fixturesRoot);
 }
 inherits(Generator, Base);
-
 
 Generator.prototype.default = function() {
 
@@ -42,28 +49,36 @@ Generator.prototype.default = function() {
  * package.json related
  */
 Generator.prototype._packageJson = function() {
-  var packageJsonFile = this.destinationPath('package.json');
-  if (!fs.existsSync(packageJsonFile)) {
-    this.log(`
-    \`package.json\` not found at \`${ packageJsonFile }\`
+  var destPackageJsonFile = this.destinationPath('package.json');
+  var srcPackageJsonFile = this.templatePath('package.json');
 
-    run \`npm init\` first
+  // the dest `package.json` not exists
+  // abort
+  if (!fs.existsSync(destPackageJsonFile)) {
+    this.log(`
+  ${ symbols.error } "package.json" not found at "${ destPackageJsonFile }"
+
+  ${ symbols.info } try \`npm init\` first
     `);
     return false;
   }
 
-  var packageJson = this.fs.readJSON(packageJsonFile);
+  // handle package.json
+  var destPackageJson = this.fs.readJSON(destPackageJsonFile);
+  var srcPackageJson = this.fs.readJSON(srcPackageJsonFile);
 
-  // scripts
-  packageJson.scripts.postinstall = "cd node_modules; ln -sf ../app; ln -sf ../lib";
+  // 1.scripts
+  destPackageJson = destPackageJson || {};
+  destPackageJson.scripts = destPackageJson.scripts || {};
+  destPackageJson.scripts.postinstall = srcPackageJson.scripts.postinstall;
 
-  // dependencies 合并
-  var templateDependencies = require('./templates/package').dependencies;
-  packageJson.dependencies = _.assign(packageJson.dependencies || {}, templateDependencies);
-  debug('template dependencies : %j', templateDependencies);
-  debug('final dependencies : %j', packageJson.dependencies);
+  // 2.dependencies
+  destPackageJson.dependencies = _.assign(destPackageJson.dependencies || {}, srcPackageJson.dependencies);
+  debug('template dependencies : %j', srcPackageJson.dependencies);
+  debug('final dependencies : %j', destPackageJson.dependencies);
 
-  this.fs.writeJSON(packageJsonFile, packageJson, null, '  ');
+  // writeJSON
+  this.fs.writeJSON(destPackageJsonFile, destPackageJson, null, '  ');
   this.log('> processed: package.json');
   return true;
 };
@@ -76,7 +91,7 @@ Generator.prototype._copyFiles = function() {
   var copy = this.fs.copy.bind(this.fs);
 
   ['Gulpfile.js', 'app.js', 'index.js'].forEach(function(f) {
-    var src = self.templatePath(f)
+    var src = self.templatePath(f);
     var dest = self.destinationPath(f);
     copy(src, dest);
     self.log('> processed: ' + f);
@@ -86,13 +101,9 @@ Generator.prototype._copyFiles = function() {
   fs.ensureDirSync(this.destinationPath('lib'));
 
   // app 文件夹
-  if (fs.existsSync(this.destinationPath('app'))) {
-    this.log('! `app/` dir exists, try remove `app/` dir');
-    return;
-  } else {
-    var src = this.templatePath('app');
-    var dest = this.destinationPath('app');
-    fs.copySync(src, dest);
-    this.log('> processed: app/ dir');
-  }
+  // 是完整用 fs-extra 拷贝的, 已存在, 则覆盖
+  var src = this.templatePath('app');
+  var dest = this.destinationPath('app');
+  this.fs.copy(src, dest);
+  this.log('> processed: app/ dir');
 };

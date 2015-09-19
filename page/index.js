@@ -1,11 +1,12 @@
+'use strict';
+
 /**
  * module dependencies
  */
 var Base = require('yeoman-generator').Base;
 var inherits = require('util').inherits;
 var path = require('path');
-var fs = require('fs');
-var fse = require('fs-extra');
+var fs = require('fs-extra');
 
 /**
  * exports
@@ -26,8 +27,9 @@ function Generator() {
     required: true
   });
 
-  // 使用 ../app/templates 下面的source
-  this.sourceRoot(path.resolve(__dirname, '../app/templates'));
+  // use predator-kit 's test/fixtures as template
+  var fixturesRoot = path.join(path.dirname(require.resolve('predator-kit')), 'test/fixtures');
+  this.sourceRoot(fixturesRoot);
 }
 inherits(Generator, Base);
 
@@ -44,26 +46,30 @@ Generator.prototype._copyPage = function() {
   var page = this.name;
   var dir = this.destinationPath('app/' + page);
 
-  if (fs.existsSync(dir)) {
-    this.log('! `app/%s/` dir exists', page);
-    return false;
-  }
-
   // `app/<page>/` dir
-  fse.ensureDir(dir);
+  fs.ensureDir(dir);
 
-  // copy 
+  // copy
   //  - dir: assets fonts img css js view
   //  - file: index.js
   ['assets', 'fonts', 'img', 'css', 'js', 'view'].forEach(function(d) {
+
+    // copy things
     var src = self.templatePath('app/index/' + d);
     var dest = dir + '/' + d;
-    fse.copySync(src, dest);
-    self.log('> processed: %s/', d);
+
+    if (fs.existsSync(src)) {
+      self.fs.copy(src, dest);
+      self.log('> dir copied: %s/', `app/${ page }/${ d }`);
+    } else {
+      // make the dir
+      fs.ensureDirSync(dest);
+      self.log('> dir created: %s/', `app/${ page }/${ d }`);
+    }
   });
 
   var src = this.templatePath('app/index/index.js'); // router
   var dest = dir + '/' + 'index.js';
-  fse.copySync(src, dest);
+  this.fs.copy(src, dest);
   this.log('> processed: index.js');
 };

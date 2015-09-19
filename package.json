@@ -23,6 +23,8 @@
     "debug": "^2.2.0",
     "fs-extra": "^0.24.0",
     "lodash": "^3.10.1",
+    "log-symbols": "^1.0.2",
+    "predator-kit": "^0.2.2",
     "yeoman-generator": "^0.20.3"
   },
   "devDependencies": {
