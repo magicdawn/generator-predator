@@ -26,9 +26,5 @@
     "log-symbols": "^1.0.2",
     "predator-kit": "^0.2.2",
     "yeoman-generator": "^0.20.3"
-  },
-  "devDependencies": {
-    "glob": "^5.0.14",
-    "gulp": "^3.9.0"
   }
 }
