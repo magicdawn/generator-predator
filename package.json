@@ -1,6 +1,6 @@
 {
   "name": "generator-predator",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "yoeman generator for predator like preject",
   "main": "index.js",
   "scripts": {
