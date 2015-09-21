@@ -100,6 +100,26 @@ Generator.prototype._copyFiles = function() {
   // lib 文件夹
   fs.ensureDirSync(this.destinationPath('lib'));
 
+  // app 下文件夹
+  [
+    // global
+    'global/assets',
+    'global/fonts',
+    'global/img',
+    'global/css/main',
+    'global/js/main',
+
+    // index
+    'index/assets',
+    'index/fonts',
+    'index/img',
+    'index/css/main',
+    'index/js/main'
+  ].forEach(d => {
+    d = this.destinationPath('app/' + d);
+    fs.ensureDirSync(d);
+  });
+
   // app 文件夹
   // 是完整用 fs-extra 拷贝的, 已存在, 则覆盖
   var src = this.templatePath('app');
