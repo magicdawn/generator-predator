@@ -28,5 +28,8 @@
     "log-symbols": "^1.0.2",
     "predator-kit": "^0.5.2",
     "yeoman-generator": "^0.20.3"
+  },
+  "devDependencies": {
+    "eslint": "^1.9.0"
   }
 }

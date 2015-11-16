@@ -3,11 +3,11 @@
 /**
  * module dependencies
  */
-var Base = require('yeoman-generator').Base;
-var inherits = require('util').inherits;
-var path = require('path');
-var fs = require('fs-extra');
-var getTemplateRoot = require('../lib/util').getTemplateRoot;
+const Base = require('yeoman-generator').Base;
+const inherits = require('util').inherits;
+const path = require('path');
+const fs = require('fs-extra');
+const getTemplateRoot = require('../lib/util').getTemplateRoot;
 
 /**
  * exports
@@ -41,9 +41,9 @@ Generator.prototype.default = function() {
 };
 
 Generator.prototype._copyPage = function() {
-  var self = this;
-  var page = this.name;
-  var dir = this.destinationPath('app/' + page);
+  const self = this;
+  const page = this.name;
+  const dir = this.destinationPath('app/' + page);
 
   // `app/<page>/` dir
   fs.ensureDir(dir);
@@ -54,8 +54,8 @@ Generator.prototype._copyPage = function() {
   ['assets', 'fonts', 'img', 'css', 'js', 'view'].forEach(function(d) {
 
     // copy things
-    var src = self.templatePath('app/index/' + d);
-    var dest = dir + '/' + d;
+    const src = self.templatePath('app/index/' + d);
+    const dest = dir + '/' + d;
 
     if (fs.existsSync(src)) {
       self.fs.copy(src, dest);
@@ -67,8 +67,8 @@ Generator.prototype._copyPage = function() {
     }
   });
 
-  var src = this.templatePath('app/index/index.js'); // router
-  var dest = dir + '/' + 'index.js';
+  const src = this.templatePath('app/index/index.js'); // router
+  const dest = dir + '/' + 'index.js';
   this.fs.copy(src, dest);
   this.log('> processed: index.js');
 };

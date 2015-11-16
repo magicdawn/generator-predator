@@ -3,14 +3,14 @@
 /**
  * module dependencies
  */
-var Base = require('yeoman-generator').Base;
-var inherits = require('util').inherits;
-var fs = require('fs-extra');
-var _ = require('lodash');
-var debug = require('debug')('yeoman:predator:app');
-var path = require('path');
-var symbols = require('log-symbols');
-var getTemplateRoot = require('../lib/util').getTemplateRoot;
+const Base = require('yeoman-generator').Base;
+const inherits = require('util').inherits;
+const fs = require('fs-extra');
+const _ = require('lodash');
+const debug = require('debug')('yeoman:predator:app');
+const path = require('path');
+const symbols = require('log-symbols');
+const getTemplateRoot = require('../lib/util').getTemplateRoot;
 
 /**
  * exports
@@ -34,7 +34,7 @@ inherits(Generator, Base);
 Generator.prototype.default = function() {
 
   // check package json
-  var goon = this._packageJson();
+  const goon = this._packageJson();
   if (!goon) {
     return;
   }
@@ -49,8 +49,8 @@ Generator.prototype.default = function() {
  * package.json related
  */
 Generator.prototype._packageJson = function() {
-  var destPackageJsonFile = this.destinationPath('package.json');
-  var srcPackageJsonFile = this.templatePath('package.json');
+  const destPackageJsonFile = this.destinationPath('package.json');
+  const srcPackageJsonFile = this.templatePath('package.json');
 
   // the dest `package.json` not exists
   // abort
@@ -64,8 +64,8 @@ Generator.prototype._packageJson = function() {
   }
 
   // handle package.json
-  var destPackageJson = this.fs.readJSON(destPackageJsonFile);
-  var srcPackageJson = this.fs.readJSON(srcPackageJsonFile);
+  let destPackageJson = this.fs.readJSON(destPackageJsonFile);
+  const srcPackageJson = this.fs.readJSON(srcPackageJsonFile);
 
   // 1.scripts
   destPackageJson = destPackageJson || {};
@@ -87,12 +87,12 @@ Generator.prototype._packageJson = function() {
 // app.js index.js
 // app & lib dir
 Generator.prototype._copyFiles = function() {
-  var self = this;
-  var copy = this.fs.copy.bind(this.fs);
+  const self = this;
+  const copy = this.fs.copy.bind(this.fs);
 
   ['Gulpfile.js', 'app.js', 'index.js'].forEach(function(f) {
-    var src = self.templatePath(f);
-    var dest = self.destinationPath(f);
+    const src = self.templatePath(f);
+    const dest = self.destinationPath(f);
     copy(src, dest);
     self.log('> processed: ' + f);
   });
@@ -122,8 +122,8 @@ Generator.prototype._copyFiles = function() {
 
   // app 文件夹
   // 是完整用 fs-extra 拷贝的, 已存在, 则覆盖
-  var src = this.templatePath('app');
-  var dest = this.destinationPath('app');
+  const src = this.templatePath('app');
+  const dest = this.destinationPath('app');
   this.fs.copy(src, dest);
   this.log('> processed: app/ dir');
 };
