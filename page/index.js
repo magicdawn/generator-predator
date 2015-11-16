@@ -7,6 +7,7 @@ var Base = require('yeoman-generator').Base;
 var inherits = require('util').inherits;
 var path = require('path');
 var fs = require('fs-extra');
+var getTemplateRoot = require('../lib/util').getTemplateRoot;
 
 /**
  * exports
@@ -27,9 +28,7 @@ function Generator() {
     required: true
   });
 
-  // use predator-kit 's test/fixtures as template
-  var fixturesRoot = path.join(path.dirname(require.resolve('predator-kit')), 'test/fixtures');
-  this.sourceRoot(fixturesRoot);
+  this.sourceRoot(getTemplateRoot());
 }
 inherits(Generator, Base);
 

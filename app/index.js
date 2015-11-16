@@ -10,6 +10,7 @@ var _ = require('lodash');
 var debug = require('debug')('yeoman:predator:app');
 var path = require('path');
 var symbols = require('log-symbols');
+var getTemplateRoot = require('../lib/util').getTemplateRoot;
 
 /**
  * exports
@@ -26,8 +27,7 @@ function Generator() {
   Base.apply(this, arguments);
 
   // use predator-kit 's test/fixtures as template
-  var fixturesRoot = path.join(path.dirname(require.resolve('predator-kit')), 'test/fixtures');
-  this.sourceRoot(fixturesRoot);
+  this.sourceRoot(getTemplateRoot());
 }
 inherits(Generator, Base);
 
