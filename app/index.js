@@ -90,7 +90,7 @@ Generator.prototype._copyFiles = function() {
   const self = this;
   const copy = this.fs.copy.bind(this.fs);
 
-  ['Gulpfile.js', 'app.js', 'index.js'].forEach(function(f) {
+  ['Gulpfile.js', 'app.js', 'index.js', '.eslintrc'].forEach(function(f) {
     const src = self.templatePath(f);
     const dest = self.destinationPath(f);
     copy(src, dest);
