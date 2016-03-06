@@ -6,7 +6,7 @@
 const Base = require('yeoman-generator').Base;
 const inherits = require('util').inherits;
 const path = require('path');
-const fs = require('fs-extra');
+const fs = require('needle-kit').fs;
 const getTemplateRoot = require('../lib/util').getTemplateRoot;
 
 /**

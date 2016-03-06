@@ -5,7 +5,7 @@
  */
 const Base = require('yeoman-generator').Base;
 const inherits = require('util').inherits;
-const fs = require('fs-extra');
+const fs = require('needle-kit').fs;
 const _ = require('lodash');
 const debug = require('debug')('yeoman:predator:app');
 const path = require('path');

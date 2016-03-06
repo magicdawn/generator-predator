@@ -23,10 +23,10 @@
   "homepage": "https://github.com/magicdawn/generator-predator#readme",
   "dependencies": {
     "debug": "^2.2.0",
-    "fs-extra": "^0.24.0",
     "lodash": "^3.10.1",
     "log-symbols": "^1.0.2",
-    "predator-kit": "^0.6.4",
+    "needle-kit": "^1.0.0",
+    "predator-kit": "^0.7.0",
     "yeoman-generator": "^0.20.3"
   },
   "devDependencies": {
