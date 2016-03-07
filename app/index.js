@@ -86,38 +86,15 @@ Generator.prototype._packageJson = function() {
 // app.js index.js
 // app & lib dir
 Generator.prototype._copyFiles = function() {
-  const self = this;
-  const copy = this.fs.copy.bind(this.fs);
-
-  ['Gulpfile.js', 'app.js', 'index.js', '.eslintrc'].forEach(function(f) {
-    const src = self.templatePath(f);
-    const dest = self.destinationPath(f);
-    copy(src, dest);
-    self.log('> processed: ' + f);
+  ['Gulpfile.js', 'app.js', 'index.js', '.eslintrc'].forEach(f => {
+    const src = this.templatePath(f);
+    const dest = this.destinationPath(f);
+    this.fs.copy(src, dest);
+    this.log('> processed: ' + f);
   });
 
   // lib 文件夹
   fs.ensureDirSync(this.destinationPath('lib'));
-
-  // app 下文件夹
-  [
-    // global
-    'global/assets',
-    'global/fonts',
-    'global/img',
-    'global/css/main',
-    'global/js/main',
-
-    // index
-    'index/assets',
-    'index/fonts',
-    'index/img',
-    'index/css/main',
-    'index/js/main'
-  ].forEach(d => {
-    d = this.destinationPath('app/' + d);
-    fs.ensureDirSync(d);
-  });
 
   // app 文件夹
   const src = this.templatePath('app');
