@@ -29,6 +29,7 @@ function Generator() {
   // use predator-kit 's test/fixtures as template
   this.sourceRoot(getTemplateRoot());
 }
+
 inherits(Generator, Base);
 
 Generator.prototype.default = function() {
@@ -67,15 +68,13 @@ Generator.prototype._packageJson = function() {
   let destPackageJson = this.fs.readJSON(destPackageJsonFile);
   const srcPackageJson = this.fs.readJSON(srcPackageJsonFile);
 
-  // 1.scripts
-  destPackageJson = destPackageJson || {};
-  destPackageJson.scripts = destPackageJson.scripts || {};
-  destPackageJson.scripts.postinstall = srcPackageJson.scripts.postinstall;
+  // 1. dependencies & devDependencies
+  // 2. scripts.postinstall
+  const tmp = _.pick(srcPackageJson, ['dependencies', 'devDependencies', 'scripts.postinstall']);
+  destPackageJson = _.merge(destPackageJson, tmp);
 
-  // 2.dependencies
-  destPackageJson.dependencies = _.assign(destPackageJson.dependencies || {}, srcPackageJson.dependencies);
-  debug('template dependencies : %j', srcPackageJson.dependencies);
-  debug('final dependencies : %j', destPackageJson.dependencies);
+  debug('template package.json : %j', srcPackageJson);
+  debug('dest package.json : %j', destPackageJson);
 
   // writeJSON
   this.fs.writeJSON(destPackageJsonFile, destPackageJson, null, '  ');
@@ -121,7 +120,6 @@ Generator.prototype._copyFiles = function() {
   });
 
   // app 文件夹
-  // 是完整用 fs-extra 拷贝的, 已存在, 则覆盖
   const src = this.templatePath('app');
   const dest = this.destinationPath('app');
   this.fs.copy(src, dest);
