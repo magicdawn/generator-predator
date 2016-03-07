@@ -3,6 +3,7 @@
 /**
  * module dependencies
  */
+
 const Base = require('yeoman-generator').Base;
 const inherits = require('util').inherits;
 const path = require('path');
@@ -30,6 +31,7 @@ function Generator() {
 
   this.sourceRoot(getTemplateRoot());
 }
+
 inherits(Generator, Base);
 
 
@@ -41,7 +43,6 @@ Generator.prototype.default = function() {
 };
 
 Generator.prototype._copyPage = function() {
-  const self = this;
   const page = this.name;
   const dir = this.destinationPath('app/' + page);
 
@@ -51,19 +52,18 @@ Generator.prototype._copyPage = function() {
   // copy
   //  - dir: assets fonts img css js view
   //  - file: index.js
-  ['assets', 'fonts', 'img', 'css', 'js', 'view'].forEach(function(d) {
-
+  ['assets', 'fonts', 'img', 'css', 'js', 'view'].forEach(d => {
     // copy things
-    const src = self.templatePath('app/index/' + d);
+    const src = this.templatePath('app/index/' + d);
     const dest = dir + '/' + d;
 
     if (fs.existsSync(src)) {
-      self.fs.copy(src, dest);
-      self.log('> dir copied: %s/', `app/${ page }/${ d }`);
+      this.fs.copy(src, dest);
+      this.log('> dir copied: %s/', `app/${ page }/${ d }`);
     } else {
       // make the dir
       fs.ensureDirSync(dest);
-      self.log('> dir created: %s/', `app/${ page }/${ d }`);
+      this.log('> dir created: %s/', `app/${ page }/${ d }`);
     }
   });
 

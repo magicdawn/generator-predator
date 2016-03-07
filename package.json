@@ -13,7 +13,9 @@
     "url": "git+https://github.com/magicdawn/generator-predator.git"
   },
   "keywords": [
-    "yeoman-generator"
+    "yeoman-generator",
+    "predator-kit",
+    "predator"
   ],
   "author": "magicdawn",
   "license": "MIT",
@@ -27,7 +29,7 @@
     "log-symbols": "^1.0.2",
     "needle-kit": "^1.0.0",
     "predator-kit": "^0.7.0",
-    "yeoman-generator": "^0.20.3"
+    "yeoman-generator": "^0.22.5"
   },
   "devDependencies": {
     "eslint": "^2.3.0"
