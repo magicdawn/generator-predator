@@ -86,7 +86,7 @@ Generator.prototype._packageJson = function() {
 // app.js index.js
 // app & lib dir
 Generator.prototype._copyFiles = function() {
-  ['Gulpfile.js', 'app.js', 'index.js', '.eslintrc'].forEach(f => {
+  ['Gulpfile.js', 'app.js', 'index.js', '.eslintrc.yml'].forEach(f => {
     const src = this.templatePath(f);
     const dest = this.destinationPath(f);
     this.fs.copy(src, dest);
