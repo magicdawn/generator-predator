@@ -28,7 +28,7 @@
     "lodash": "^4.6.1",
     "log-symbols": "^1.0.2",
     "needle-kit": "^1.2.0",
-    "predator-kit": "^0.7.4",
+    "predator-kit": "^0.7.5",
     "yeoman-generator": "^0.22.5"
   },
   "devDependencies": {

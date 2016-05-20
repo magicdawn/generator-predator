@@ -59,7 +59,7 @@ Generator.prototype._packageJson = function() {
     this.log(`
   ${ symbols.error } "package.json" not found at "${ destPackageJsonFile }"
 
-  ${ symbols.info } try \`npm init\` first
+  ${ symbols.info } try "npm init" first
     `);
     return false;
   }
@@ -70,7 +70,7 @@ Generator.prototype._packageJson = function() {
 
   // 1. dependencies & devDependencies
   // 2. scripts.postinstall
-  const tmp = _.pick(srcPackageJson, ['dependencies', 'devDependencies', 'scripts.postinstall']);
+  const tmp = _.pick(srcPackageJson, 'dependencies', 'devDependencies', 'scripts');
   destPackageJson = _.merge(destPackageJson, tmp);
 
   debug('template package.json : %j', srcPackageJson);
