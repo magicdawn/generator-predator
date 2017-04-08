@@ -27,12 +27,12 @@
     "debug": "^2.2.0",
     "lodash": "^4.6.1",
     "log-symbols": "^1.0.2",
-    "needle-kit": "^1.2.0",
+    "needle-kit": "^2.0.0",
     "predator-kit": "^0.7.5",
-    "yeoman-generator": "^0.22.5"
+    "yeoman-generator": "^1.1.1"
   },
   "devDependencies": {
-    "eslint": "^2.3.0"
+    "eslint": "^3.19.0"
   },
   "engines": {
     "node": ">=4"
